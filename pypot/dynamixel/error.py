@@ -44,7 +44,8 @@ class DxlErrorHandler(object):
         print "A checksum error happened."
 
     def handle_overload_error(self, instruction_packet):
-        raise NotImplementedError
+        # for shows, it is not recommended to switch off the robot if an overload error appear. The motor is then stalled
+        print "Overload."
 
     def handle_instruction_error(self, instruction_packet):
         raise NotImplementedError
