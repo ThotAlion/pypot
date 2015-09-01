@@ -70,6 +70,32 @@ class RESTRobot(object):
 
     def set_sensor_register_value(self, sensor, register, value):
         return self._set_register_value(sensor, register, value)
+        
+    # Access to all the values in a compressed format
+    
+    def get_all_register_values(self):
+        dict = {}
+        dict["name"] = self.get_motors_list()
+        registerList = ["angle_limit","id","present_position","present_speed","present_voltage","present_load","present_temperature"]
+        for reg in registerList:
+            dict[reg]=[]
+            for motor in dict["name"]:
+                try:
+                    dict[reg].append(self.get_motor_register_value(motor,reg))
+                except:
+                    dict[reg].append(0.0)
+                    pass
+        return dict
+        
+    def set_all_register_values(self,dict):
+        for reg in dict:
+            if not reg == "name":
+                try:
+                    for i in range(len(dict["name"])):
+                        motor = dict["name"][i]
+                        self.set_register_value(motor,reg,dict[reg][i])
+                except:
+                    pass
 
     # Access primitive related values
 
