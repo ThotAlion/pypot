@@ -40,7 +40,8 @@ class DxlErrorHandler(object):
         raise NotImplementedError
 
     def handle_checksum_error(self, instruction_packet):
-        raise NotImplementedError
+        # This kind of error is not critical for the robot.
+        print "A checksum error happened."
 
     def handle_overload_error(self, instruction_packet):
         raise NotImplementedError
