@@ -149,7 +149,11 @@ class SimplePosture(Primitive):
         self.duration = duration
 
     def setup(self):
-        self._speeds = {m.name: m.moving_speed for m in self.robot.motors}
+        self._speeds = {m: m.moving_speed for m in self.robot.motors}
+
+        if hasattr(self, 'leds'):
+            for m, c in self.leds.items():
+                m.led = c
 
     def run(self):
         if not hasattr(self, 'target_position'):
@@ -163,3 +167,7 @@ class SimplePosture(Primitive):
     def teardown(self):
         for m, s in self._speeds.items():
             m.moving_speed = s
+
+        if hasattr(self, 'leds'):
+            for m, c in self.leds.items():
+                m.led = 'off'

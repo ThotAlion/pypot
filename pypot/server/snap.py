@@ -136,6 +136,12 @@ class SnapRobotServer(AbstractServer):
             with open(os.path.join(get_snap_user_projects_directory(), 'pypot-snap-blocks.xml')) as f:
                 return f.read()
 
+        @self.app.get('/snap/<project>')
+        def get_snap_projects(project):
+            with open(os.path.join(get_snap_user_projects_directory(),
+                                   '{}.xml'.format(project))) as f:
+                return f.read()
+
         @self.app.get('/ip')
         def get_ip():
             return socket.gethostbyname(socket.gethostname())
@@ -252,6 +258,16 @@ class SnapRobotServer(AbstractServer):
         def stop_move_player(move_name):
             rr.stop_primitive('_{}_player'.format(move_name))
             return 'Done!'
+
+        @self.app.get('/detect/<marker>')
+        def detect_marker(marker):
+            markers = {
+                'tetris': [112259237],
+                'caribou': [221052793],
+                'lapin': [44616414],
+            }
+            detected = rr.robot.marker_detector.markers
+            return str(any([m.id in markers[marker] for m in detected]))
 
     def run(self):
         bottle.run(self.app, host=self.host, port=self.port, quiet=self.quiet)

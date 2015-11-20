@@ -14,11 +14,18 @@ extra = {}
 if sys.version_info >= (3,):
     extra['use_2to3'] = True
 
+install_requires = ['numpy',
+                    'pyserial>2.6',
+                    'scipy']
+
+if sys.version_info < (3, 4):
+    install_requires.append('enum34')
+
 setup(name='pypot',
       version=version(),
       packages=find_packages(),
 
-      install_requires=['numpy', 'pyserial', 'enum34', 'scipy'],
+      install_requires=install_requires,
 
       extras_require={
           'tools': [],  # Extras require: PyQt4 (not a PyPi packet)
@@ -45,7 +52,7 @@ setup(name='pypot',
 
       zip_safe=False,
 
-      author='Pierre Rouanet, Steve N\'Guyen, Matthieu Lapeyre',
+      author='See https://github.com/poppy-project/pypot/graphs/contributors',
       author_email='pierre.rouanet@gmail.com',
       description='Python Library for Robot Control',
       url='https://github.com/poppy-project/pypot',
